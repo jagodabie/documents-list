@@ -1,7 +1,8 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { store } from "@/store/store";
 import DocumentList from "@/components/DocumentList.vue";
+const loading = ref(null);
 
 const handleClick = async () => {
   let text = "Are you sure you want to delete this documents permanently ?";
@@ -17,7 +18,14 @@ const handleClick = async () => {
 };
 
 onMounted(async () => {
-  await store.setRecycledBinDocumentsList();
+  try {
+    loading.value = true;
+    await store.setRecycledBinDocumentsList();
+  } catch (e) {
+    console.log(e);
+  } finally {
+    loading.value = false;
+  }
 });
 </script>
 <template>
