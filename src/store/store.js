@@ -87,19 +87,19 @@ export const store = reactive({
   async saveDocument(document) {
     this.database = await this.getDatabase();
 
-    return new Promise((reject, resolve) => {
+    return new Promise((resolve, reject) => {
       const transaction = this.database.transaction("documents", "readwrite");
       const store = transaction.objectStore("documents");
 
       store.put(document);
 
-      transaction.oncomplete(() => {
-        resolve("Item successfully saved");
-      });
+      transaction.oncomplete = () => {
+        resolve("Item successfully saved.");
+      };
 
-      transaction.onerror((event) => {
+      transaction.onerror = (event) => {
         reject(event);
-      });
+      };
     });
   },
 
@@ -148,9 +148,9 @@ export const store = reactive({
 
       store.delete(document);
 
-      transaction.oncomplete(() => {
-        resolve("Item successfully saved");
-      });
+      transaction.oncomplete = () => {
+        resolve("Item successfully deleted");
+      };
 
       transaction.onerror((event) => {
         reject(event);
